@@ -75,15 +75,15 @@ public sealed partial class LocalEmbedder : IDisposable
                 {
                     "input_ids" => OrtValue.CreateTensorValueFromMemory(
                         OrtMemoryInfo.DefaultInstance,
-                        MemoryMarshal.AsMemory(tokens.InputIds),
+                        tokens.InputIds,
                         [1L, tokens.InputIds.Length]),
                     "attention_mask" => OrtValue.CreateTensorValueFromMemory(
                         OrtMemoryInfo.DefaultInstance,
-                        MemoryMarshal.AsMemory(tokens.AttentionMask),
+                        tokens.AttentionMask,
                         [1, tokens.AttentionMask.Length]),
                     "token_type_ids" => OrtValue.CreateTensorValueFromMemory(
                         OrtMemoryInfo.DefaultInstance,
-                        MemoryMarshal.AsMemory(tokens.TokenTypeIds),
+                        tokens.TokenTypeIds,
                         [1, tokens.TokenTypeIds.Length]),
                     _ => throw new InvalidOperationException($"Unknown input name: {_onnxSession.InputNames[i]}")
                 };

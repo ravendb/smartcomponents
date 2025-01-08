@@ -25,9 +25,14 @@ public sealed partial class LocalEmbedder : IDisposable
 
     public int Dimensions { get; }
 
-    public LocalEmbedder(string modelName = "default", bool caseSensitive = false)
+    public LocalEmbedder(string modelName = "default", bool caseSensitive = false) 
+        : this(new SessionOptions(), modelName, caseSensitive)
     {
-        _onnxSession = new InferenceSession(GetFullPathToModelFile(modelName, "model.onnx"));
+    }
+
+    public LocalEmbedder(SessionOptions sessionOptions, string modelName = "default", bool caseSensitive = false)
+    {
+        _onnxSession = new InferenceSession(GetFullPathToModelFile(modelName, "model.onnx"), sessionOptions);
         _tokenizersPool = new DefaultObjectPool<BertTokenizer>(new BertTokenizerPoolPolicy(modelName, caseSensitive), maximumRetained: 32);
         Dimensions = _onnxSession.OutputMetadata.First().Value.Dimensions.Last(); // 384 for the supported models
     }
